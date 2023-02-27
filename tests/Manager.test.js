@@ -1,6 +1,6 @@
 const Manager = require("../lib/manager")
 
-test('It should return manager when getRole is called', () => {
+test('It should return manager', () => {
 
   const manager = new Manager('Tim', '27', 'tim@abc.com', '27')
 
