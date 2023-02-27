@@ -1,56 +1,99 @@
-const path = require('path');
-const fs = require('fs');
+const generateManagerCard = (manager) => {
+  return `
+    <div>
+      <div class="managerbox">
+        <div>
+          <h3>${manager.name}</h3>
+          <h4>Manager</h4>
+        </div>
+        <div>
+          <p>ID: ${manager.id}</p>
+          <p>Email: <a href="mailto:${manager.email}">${manager.email}</a></p>
+          <p>Office Number: ${manager.officeNum}</p>
+        </div>
+      </div>
+    </div>
+  `;
+};
 
-// Define a function to generate an HTML file based on the team member data
-function generateHTML(teamMembers) {
-  
-  const templatesDir = path.resolve(__dirname, '../templates');
+const generateEngineerCard = (engineer) => {
+  return `
+    <div>
+      <div class="engineerbox">
+        <div>
+          <h3>${engineer.name}</h3>
+          <h4>Engineer</h4>
+        </div>
+        <div>
+          <p>ID: ${engineer.id}</p>
+          <p>Email: <a href="mailto:${engineer.email}">${engineer.email}</a></p>
+          <p>Github: <a href="https://github.com/${engineer.github}">${engineer.github}</a></p>
+        </div>
+      </div>
+    </div>
+  `;
+};
 
-  const managerTemplate = fs.readFileSync(
-    path.resolve(templatesDir, 'manager.html'),
-    'utf8'
-  );
-  const engineerTemplate = fs.readFileSync(
-    path.resolve(templatesDir, 'engineer.html'),
-    'utf8'
-  );
-  const internTemplate = fs.readFileSync(
-    path.resolve(templatesDir, 'intern.html'),
-    'utf8'
-  );
+const generateInternCard = (intern) => {
+  return `
+    <div>
+      <div class="internbox">
+        <div>
+          <h3>${intern.name}</h3>
+          <h4>Intern</h4>
+        </div>
+        <div>
+          <p>ID: ${intern.id}</p>
+          <p>Email: <a href="mailto:${intern.email}">${intern.email}</a></p>
+          <p>School: ${intern.school}</p>
+        </div>
+      </div>
+    </div>
+  `;
+};
 
-  const renderEmployee = (employee) => {
-    switch (employee.role) {
+const generateHTML = (data) => {
+  const employeeCards = data.map((employee) => {
+    const role = employee.getRole();
+    switch (role) {
       case 'Manager':
-        return managerTemplate
-          .replace('{{ name }}', employee.name)
-          .replace('{{ id }}', employee.id)
-          .replace('{{ email }}', employee.email)
-          .replace('{{ officeNumber }}', employee.officeNumber);
+        return generateManagerCard(employee);
       case 'Engineer':
-        return engineerTemplate
-          .replace('{{ name }}', employee.name)
-          .replace('{{ id }}', employee.id)
-          .replace('{{ email }}', employee.email)
-          .replace('{{ github }}', employee.github);
+        return generateEngineerCard(employee);
       case 'Intern':
-        return internTemplate
-          .replace('{{ name }}', employee.name)
-          .replace('{{ id }}', employee.id)
-          .replace('{{ email }}', employee.email)
-          .replace('{{ school }}', employee.school);
+        return generateInternCard(employee);
       default:
-        throw new Error(`Invalid employee type: ${employee.role}`);
+        return '';
     }
-  };
+  }).join('');
 
-  const employeeHTML = teamMembers.map(renderEmployee).join('');
-  const finalHTML = fs.readFileSync(
-    path.resolve(templatesDir, 'main.html'),
-    'utf8'
-  ).replace('{{ team }}', employeeHTML);
+  const html = `
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <title>Software Engineers Page</title>
+        <link rel="stylesheet" href="style.css">
+      </head>
+      <body>
+        <header>
+          <nav class="navbar">
+            <span>Software Team</span>
+          </nav>
+        </header>
+        <main>
+          <div class="container">
+            <div class="boxes">
+              ${employeeCards}
+            </div>
+          </div>
+        </main>
+      </body>
+    </html>
+  `;
 
-  return finalHTML;
-}
+  return html;
+};
 
 module.exports = { generateHTML };
+
