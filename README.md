@@ -1,6 +1,6 @@
 # Team-Profile-Generator
-[Github Repo](https://github.com/RahsanLewis/Team-Profile-Generator)
-[Video Link](https://drive.google.com/file/d/1SffZcs5PC4xp7Q9dydimkEMRj3cit8Ba/view)
+* [Github Repo](https://github.com/RahsanLewis/Team-Profile-Generator)
+* [Video Link](https://drive.google.com/file/d/1SffZcs5PC4xp7Q9dydimkEMRj3cit8Ba/view)
 
 # Description
 This application is designed for management teams to input Manager and Employee information, identifying their position and other useful information. The application generates a webpage based on user inputs through the terminal.
